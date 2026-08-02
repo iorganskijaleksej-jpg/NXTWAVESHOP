@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css"> </head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NXTWAVESHOP — Curated Sneakers</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            canvas: '#F5F5F7',
+            ink: '#000000',
+            slate: '#86868B',
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+    .product-card-image { transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .product-card:hover .product-card-image { transform: scale(1.05); }
+
+    .modal-backdrop { transition: opacity 0.3s ease; }
+    .modal-panel { transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.3s ease; }
+
+    .cart-panel { transition: transform 0.45s cubic-bezier(0.32, 0.72, 0, 1); }
+
+    .size-btn { transition: all 0.2s ease; }
+    .size-btn.active { background: #000; color: #fff; }
+
+    .overlay-hidden { opacity: 0; pointer-events: none; }
+    .overlay-visible { opacity: 1; pointer-events: auto; }
+
+    .modal-hidden .modal-panel { transform: scale(0.95) translateY(20px); opacity: 0; }
+    .modal-visible .modal-panel { transform: scale(1) translateY(0); opacity: 1; }
+
+    .cart-hidden { transform: translateX(100%); }
+    .cart-visible { transform: translateX(0); }
+
+    input:focus, textarea:focus { outline: none; box-shadow: 0 0 0 2px rgba(0,0,0,0.08); }
+
+    .card-gallery { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .card-gallery::-webkit-scrollbar { display: none; }
+    .card-gallery-slide { scroll-snap-align: center; }
+  </style>
+</head>
+<body class="bg-white text-ink font-sans antialiased">
+
+  <!-- Navigation -->
+  <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/[0.04]">
+    <nav class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+      
+      <a href="index.html" class="text-sm font-semibold tracking-[0.15em] uppercase text-ink">
+        NXTWAVESHOP
+      </a>
+      
+      <div class="flex items-center gap-5 sm:gap-8">
+        <a href="catalog.html" class="text-sm text-slate hover:text-ink font-medium transition-colors duration-200">
+          Catalog
+        </a>
+        </a>
+  
+        <button id="cart-toggle" class="relative p-2 -mr-2 hover:opacity-60 transition-opacity duration-200" aria-label="Open cart">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-ink" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
+          </svg>
+          <span id="cart-count" class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-ink text-white text-[10px] font-medium rounded-full flex items-center justify-center hidden">0</span>
+        </button>
+      </div>
+  
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="pt-14">
+    <div class="max-w-6xl mx-auto px-6 pt-20 pb-16 text-center">
+      <p class="text-xs font-medium tracking-widest uppercase text-slate mb-6">
+        Curated Drops. Direct from Authorized Suppliers. Delivery in 15–20 Days.
+      </p>
+      <h1 class="text-5xl sm:text-6xl md:text-7xl font-semibold tracking-tight leading-[1.05] mb-6">
+        NSTWAVESHOP<br class="hidden sm:block" /> The sneakers
+        you actually want.
+      </h1>
+      <p class="text-lg sm:text-xl text-slate max-w-xl mx-auto leading-relaxed">
+        Hand-picked releases from verified suppliers. Pre-order today, delivered to your door.
+      </p>
+    </div>
+  </section>
+
+  <!-- Product Catalog -->
+  <section id="catalog" class="max-w-6xl mx-auto px-4 sm:px-6 pb-24">
+    <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
+      </div>
+  </section>
+
+  <div class="load-more-container">
+    <a href="catalog.html" class="load-more-btn">See more</a>
+  </div>
+
+  <!-- Delivery & Process -->
+  <section id="process" class="bg-canvas py-24">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight mb-4">How it works.</h2>
+      <p class="text-slate text-lg mb-16 max-w-lg mx-auto">Simple, transparent, and secure — from selection to delivery.</p>
+      <div class="grid sm:grid-cols-3 gap-10 text-left">
+        <div>
+          <span class="text-xs font-semibold tracking-widest uppercase text-slate">01</span>
+          <h3 class="text-lg font-semibold mt-2 mb-2">Choose &amp; Pre-Order</h3>
+          <p class="text-sm text-slate leading-relaxed">Select your size and foot length. We verify availability with our supplier instantly after payment.</p>
+        </div>
+        <div>
+          <span class="text-xs font-semibold tracking-widest uppercase text-slate">02</span>
+          <h3 class="text-lg font-semibold mt-2 mb-2">Size Verification</h3>
+          <p class="text-sm text-slate leading-relaxed">We confirm the exact size in cm with the supplier. Out of stock? 100% immediate refund.</p>
+        </div>
+        <div>
+          <span class="text-xs font-semibold tracking-widest uppercase text-slate">03</span>
+          <h3 class="text-lg font-semibold mt-2 mb-2">Delivered in 15–23 Days</h3>
+          <p class="text-sm text-slate leading-relaxed">Your pair ships directly from our supplier network to your address.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="py-24">
+    <div class="max-w-2xl mx-auto px-6">
+      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight mb-12 text-center">FAQ</h2>
+      <div class="space-y-8">
+        <div>
+          <h3 class="font-semibold mb-2">Why pre-order?</h3>
+          <p class="text-sm text-slate leading-relaxed">We source directly from suppliers. Pre-ordering ensures you get pairs at fair prices, even for sold-out releases.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-2">What if my size is unavailable?</h3>
+          <p class="text-sm text-slate leading-relaxed">After payment, we verify stock with the supplier. If your size is out of stock, you receive a 100% immediate refund — no questions asked.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-2">How long does delivery take?</h3>
+          <p class="text-sm text-slate leading-relaxed">Expect delivery within 15–20 business days from order confirmation. You'll receive tracking information once your pair ships.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews-section">
+    <div class="container">
+      <h2 class="section-title">Customer reviews</h2>
+      <div class="reviews-grid">
+        
+        <div class="review-card">
+          <div class="review-author">
+            <img src="images/reviews/user_1.webp" alt="Mitko" class="review-avatar zoomable">
+            <div class="review-author-info">
+              <h3 class="review-name">Mitko</h3>
+              <span class="review-country">🇧🇬 Bulgaria, Plovdiv</span>
+            </div>
+          </div>
+          <p class="review-text">«I ordered sneakers for the first time. They were delivered in 18 days, and the quality is good.»</p>
+        </div>
+  
+        <div class="review-card">
+          <div class="review-author">
+            <img src="images/reviews/user_2.webp" alt="Plamena" class="review-avatar zoomable">
+            <div class="review-author-info">
+              <h3 class="review-name">Plamena</h3>
+              <span class="review-country">🇧🇬 Bulgaria, Sofia</span>
+            </div>
+          </div>
+          <p class="review-text">«He liked the gift) Thank you!»</p>
+        </div>
+  
+        <div class="review-card">
+          <div class="review-author">
+            <img src="images/reviews/user_4.webp" alt="Ivan" class="review-avatar zoomable">
+            <div class="review-author-info">
+              <h3 class="review-name">Ivan</h3>
+              <span class="review-country">🇧🇬 Bulgaria, Burgas</span>
+            </div>
+          </div>
+          <p class="review-text">«I waited 20 days for delivery, but the shoes are great!»</p>
+        </div>
+  
+      </div>
+    </div>
+  </section>
+  <!-- Footer -->
+  <footer class="border-t border-black/[0.04] py-10">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <span class="text-xs text-slate">&copy; 2026 NXTWAVESHOP. All rights reserved.</span>
+      <span class="text-xs text-slate">Quality guaranteed. Secure payments.</span>
+    </div>
+  </footer>
+
+  <!-- Product Detail Modal -->
+  <div id="product-modal" class="fixed inset-0 z-[60] flex items-end sm:items-center justify-center modal-hidden overlay-hidden modal-backdrop" aria-hidden="true">
+    <div id="modal-backdrop" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+    <div class="modal-panel relative w-full sm:max-w-2xl max-h-[92vh] sm:max-h-[85vh] overflow-y-auto bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl mx-0 sm:mx-4">
+      <button id="modal-close" class="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-canvas hover:bg-black/10 transition-colors duration-200" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div id="modal-content" class="p-6 sm:p-8">
+        <!-- Rendered by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Slide-Over -->
+  <div id="cart-overlay" class="fixed inset-0 z-[70] overlay-hidden modal-backdrop" aria-hidden="true">
+    <div id="cart-backdrop" class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+    <aside id="cart-panel" class="cart-panel cart-hidden absolute top-0 right-0 h-full w-full sm:w-[420px] bg-white shadow-2xl flex flex-col">
+      <div class="flex items-center justify-between px-6 h-14 border-b border-black/[0.04] shrink-0">
+        <h2 class="text-sm font-semibold tracking-wide">Your Bag</h2>
+        <button id="cart-close" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-canvas transition-colors duration-200" aria-label="Close cart">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div id="cart-items" class="flex-1 overflow-y-auto px-6 py-6">
+        <!-- Rendered by app.js -->
+      </div>
+
+      <div id="cart-footer" class="border-t border-black/[0.04] px-6 py-6 shrink-0">
+        <div class="flex items-center justify-between mb-6">
+          <span class="text-sm text-slate">Subtotal</span>
+          <span id="cart-subtotal" class="text-lg font-semibold">$0</span>
+        </div>
+
+        <form id="checkout-form" class="space-y-4">
+          <input type="text" name="fullName" placeholder="Full Name" required
+            class="w-full px-4 py-3 bg-canvas rounded-2xl text-sm placeholder:text-slate/60 border-0" />
+          <input type="tel" name="phone" placeholder="Phone Number" required
+            class="w-full px-4 py-3 bg-canvas rounded-2xl text-sm placeholder:text-slate/60 border-0" />
+          <input type="email" name="email" placeholder="Gmail address" required
+            class="w-full px-4 py-3 bg-canvas rounded-2xl text-sm placeholder:text-slate/60 border-0" />
+          <textarea name="address" placeholder="Delivery Address" rows="2" required
+            class="w-full px-4 py-3 bg-canvas rounded-2xl text-sm placeholder:text-slate/60 border-0 resize-none"></textarea>
+
+          <button type="submit" id="checkout-btn"
+            class="w-full py-3.5 bg-ink text-white text-sm font-medium rounded-full hover:bg-black/80 transition-colors duration-200 disabled:opacity-30 disabled:cursor-not-allowed">
+            Checkout Order
+          </button>
+          <p class="text-[11px] text-slate text-center leading-relaxed">
+            Secure payment. 100% refund if the required size is unavailable.
+          </p>
+        </form>
+      </div>
+    </aside>
+  </div>
+
+
+  <div id="reviewImageModal" class="fixed inset-0 z-[80] flex items-center justify-center bg-black/80 hidden opacity-0 transition-opacity duration-300">
+    <button id="closeReviewModal" class="absolute top-6 right-6 text-white text-3xl font-bold hover:text-gray-300 focus:outline-none">&times;</button>
+    <img id="expandedReviewImg" src="" alt="Увеличенное фото отзыва" class="max-w-[90%] max-h-[90%] object-contain rounded-xl shadow-2xl">
+  </div>
+  
+</body>
+<script src="products.js"></script>
+  <script src="app.js"></script>
+</html>
