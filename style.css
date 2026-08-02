@@ -1,0 +1,93 @@
+/* Стили для секции с отзывами */
+.reviews-section {
+    padding: 60px 20px;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+  }
+  
+  .reviews-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .section-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #111;
+  }
+  
+  /* Сетка карточек: автоматически подстраивается под экран */
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  
+  /* Сама карточка отзыва */
+  .review-card {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Шапка карточки (фото + имя) */
+  .review-author {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 16px;
+  }
+  
+  /* Круглая аватарка */
+  .review-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover; /* Чтобы фото не сплющивалось */
+  }
+  
+  .review-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    margin: 0;
+  }
+  
+  /* Текст отзыва */
+  .review-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555;
+    margin: 0;
+  }
+  /* Контейнер для центрирования кнопки */
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 60px 0; /* Отступы сверху и снизу */
+  }
+  
+  /* Сама кнопка-ссылка */
+  .load-more-btn {
+    display: inline-block;
+    padding: 14px 32px;
+    background-color: #111; /* Цвет фона (темный, под стать кроссовкам) */
+    color: #fff;            /* Цвет текста */
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: уes;   /* Убираем стандартное подчеркивание ссылки */
+    border-radius: 30px;    /* Делаем края круглыми (капсула) */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+  
+  /* Эффект при наведении мыши */
+  .load-more-btn:hover {
+    background-color: #333; /* Чуть светлее при наведении */
+    transform: translateY(-2px); /* Легкий подъем вверх */
+  }
